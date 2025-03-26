@@ -1,0 +1,100 @@
+<!-- templates/patient_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Dashboard | Medicod</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">Medicod</div>
+        <nav>
+            <a href="#">Dashboard</a>
+            <a href="#">Doctors</a>
+            <a href="#">Reports</a>
+            <button class="nav-btn">Logout</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Upcoming Appointments -->
+        <section class="upcoming-patients">
+            {% for appt in upcoming_appointments %}
+            <div class="patient-card">
+                <div class="card-title">Upcoming Appointment</div>
+                <div class="date-time-row">
+                    <span class="date-chip">{{ appt.timestamp.strftime('%b %d, %Y') }}</span>
+                    <span class="time-chip">{{ appt.timestamp.strftime('%I:%M %p') }}</span>
+                </div>
+                <div class="patient-info">
+                    <img src="{{ patient.profile_image or url_for('static', filename='default_avatar.jpg') }}" alt="Patient">
+                    <p><strong>{{ appt.doctor_name }}</strong></p>
+                    <p>{{ appt.reason }}</p>
+                </div>
+            </div>
+            {% else %}
+            <p>No upcoming appointments.</p>
+            {% endfor %}
+        </section>
+
+        <div class="bottom-section">
+            <!-- Sidebar: Past Visits -->
+            <aside class="sidebar">
+                <div class="patient-info-card">
+                    <h4 class="section-title">Welcome, {{ patient.name }}</h4>
+                    <div class="patient-details">
+                        <img src="{{ patient.profile_image or url_for('static', filename='default_avatar.jpg') }}" alt="Patient">
+                        <p class="patient-email">{{ patient.email }}</p>
+                    </div>
+                </div>
+
+                <div class="past-visits">
+                    <h4 class="section-title">Your Past Visits</h4>
+                    {% for visit in past_visits %}
+                    <div class="visit">
+                        <p><strong>Visit Date:</strong></p>
+                        <div class="date-time-row">
+                            <span class="date-chip">{{ visit.timestamp.strftime('%b %d, %Y') }}</span>
+                            <span class="time-chip">{{ visit.timestamp.strftime('%I:%M %p') }}</span>
+                        </div>  
+                        <p><strong>Reason:</strong> {{ visit.reason or 'N/A' }}</p>
+                        <span class="visit-transcript" style="display: none;">{{ visit.transcript }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </aside>
+
+            <!-- Markdown Viewer -->
+            <section class="markdown-section" id="markdown-viewer" style="display: none;">
+                <h2>Visit Transcript</h2>
+                <div id="markdown-content" class="markdown-box"></div>
+            </section>
+
+            <!-- Appointment Booking -->
+            <section class="visit-section full-height-panel" id="visit-section">
+                <h2>Book an Appointment</h2>
+                <form method="POST">
+                    <label for="doctor_id">Select Doctor:</label>
+                    <select name="doctor_id" required>
+                        {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <br><br>
+                    <label for="reason">Reason:</label>
+                    <input type="text" name="reason" required>
+                    <br><br>
+                    <label for="timestamp">Appointment Time:</label>
+                    <input type="datetime-local" name="timestamp" required>
+                    <br><br>
+                    <button type="submit" class="capture-btn">📅 Book Appointment</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/doctor_view.js') }}"></script>
+</body>
+</html>

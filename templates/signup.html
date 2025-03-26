@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup | Medicod</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <!-- Left panel -->
+        <div class="login-left">
+            <h2>WELCOME <span>!</span></h2>
+            <p>Please fill your details to create an account</p>
+            <img src="{{ url_for('static', filename='uploads/images/doctor.webp') }}" alt="Doctor Icon">
+        </div>
+
+        <!-- Right panel -->
+        <div class="login-right">
+            <h2>Create Account</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <label>Full Name</label>
+                <input type="text" name="name" placeholder="John Doe" required>
+
+                <label>Email</label>
+                <input type="email" name="email" placeholder="john@example.com" required>
+
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Choose a password" required>
+
+                <label>Role</label>
+                <select name="user_type" required>
+                    <option value="">Select your role</option>
+                    <option value="patient">Patient</option>
+                    <option value="doctor">Doctor</option>
+                </select>
+
+                <label>Upload Profile Image</label>
+                <input type="file" name="profile_image" accept="image/*">
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <p class="error">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <button type="submit" class="btn full">Sign Up</button>
+
+                <div class="form-footer">
+                    <span>Already have an account? <a href="{{ url_for('login') }}">Log in</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

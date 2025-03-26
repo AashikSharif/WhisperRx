@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Medicod</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-left">
+            <h2>HELLO <span>!</span></h2>
+            <p>Please enter your details to continue</p>
+            <img src="{{ url_for('static', filename='uploads/images/doctor.webp') }}" alt="Doctor Icon">
+        </div>
+        <div class="login-right">
+            <h2>LOGO Hospital</h2>
+            <form method="POST">
+                <label>E-mail</label>
+                <input type="email" name="email" placeholder="your@email.com" required>
+
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Password" required>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <p class="error">{{ message }}</p>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                <button type="submit" class="btn full">Log in</button>
+
+                <div class="form-footer">
+                    <span>Do Not Have Account? <a href="{{ url_for('signup') }}">Sign Up</a></span>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</body>
+</html>

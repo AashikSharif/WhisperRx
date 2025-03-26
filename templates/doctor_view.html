@@ -1,0 +1,134 @@
+<!-- doctor_view.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Dashboard | Medicod</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">Medicod</div>
+        <nav>
+            <a href="#">Dashboard</a>
+            <a href="#">Patients</a>
+            <a href="#">Reports</a>
+            <button class="nav-btn">Logout</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Upcoming Appointments -->
+        <section class="upcoming-patients">
+            {% for appt in upcoming_appointments %}
+            <a href="{{ url_for('doctor_view', patient_id=appt['patient_id']) }}" class="patient-card">
+              <div class="card-title">Upcoming Patient</div>
+          
+              <div class="date-time-row">
+                <span class="date-chip">{{ appt.timestamp.strftime('%b %d, %Y') }}</span>
+                <span class="time-chip">{{ appt.timestamp.strftime('%I:%M %p') }}</span>
+              </div>
+          
+              <div class="patient-info">
+                <img src="{{ appt.profile_image or url_for('static', filename='default_avatar.jpg') }}" alt="Patient">
+                <p><strong>{{ appt.patient_name }}</strong></p>
+                <p class="visit-reason">{{ appt.reason or 'N/A' }}</p>
+              </div>
+            </a>
+            {% else %}
+            <p>No upcoming appointments.</p>
+            {% endfor %}
+          </section>
+          
+          <div class="bottom-section">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+              {% if selected_patient_data %}
+                {% for entry in selected_patient_data %}
+                <div class="patient-info-card">
+                  <h4 class="section-title">Patient Info</h4>
+                  <div class="patient-details">
+                    <img src="{{ entry.patient['profile_image'] or url_for('static', filename='default_avatar.jpg') }}" alt="Patient">
+                    <p class="patient-name">{{ entry.patient['patient_name'] }}</p>
+                    <p class="patient-email">{{ entry.patient['email'] }}</p>
+                  </div>
+                </div>
+          
+                <div class="past-visits">
+                  <h4 class="section-title">Past Visits</h4>
+                  {% if entry.past_visits %}
+                    {% for v in entry.past_visits %}
+                    <div class="visit">
+                      <p><strong>Visit Date:</strong></p>
+                        <div class="date-time-row">
+                            <span class="date-chip">{{ v.timestamp.strftime('%b %d, %Y') }}</span>
+                            <span class="time-chip">{{ v.timestamp.strftime('%I:%M %p') }}</span>
+                        </div>
+                      <p><strong>Reason:</strong> {{ v['reason'] or 'N/A' }}</p>
+                      <span class="visit-transcript" style="display: none;">{{ v['transcript'] or '' }}</span>
+                    </div>
+                    {% endfor %}
+                  {% else %}
+                    <p style="color: gray;">No past visits recorded for this patient.</p>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              {% endif %}
+            </aside>
+
+            <!-- Markdown Viewer (hidden by default) -->
+            <section class="markdown-section" id="markdown-viewer" style="display: none;">
+                <h2>Medical Record</h2>
+                <div id="markdown-content" class="markdown-box"> 
+                </div>
+            </section>
+            
+           
+           
+            <!-- Visit Recorder (default visible) -->
+            <section class="visit-section full-height-panel" id="visit-section">
+                <h2>Start a Visit</h2>
+                <div class="audio-visual">🔊 🎤 📊</div>
+            
+                {% if selected_patient_data %}
+                {% for entry in selected_patient_data %}
+                    <p><strong>{{ entry.patient['patient_name'] }}</strong></p>
+            
+                <!-- Microphone Recorder Section -->
+                <!-- <div class="recording-section"> -->
+                    <input type="hidden" id="patient_id" value="{{ entry.patient['patient_id'] }}">
+                    <input type="hidden" id="patient_name" value="{{ entry.patient['patient_name'] }}">
+                    <input type="hidden" id="reason" value="{{ entry.patient['reason'] }}">
+
+                    <button id="record-btn" class="capture-btn-Record">🎙️ Start Recording</button>
+                    <button id="pause-btn" class="capture-btn-Record" style="display: none;">⏸️ Pause</button>
+                    <button id="resume-btn" class="capture-btn-Record" style="display: none;">▶️ Resume</button>
+
+                    <audio id="audio-preview" controls style="display: none; margin-top: 10px;"></audio>
+                    <p id="transcript-output" style="margin-top: 10px;"></p>
+
+                <!-- NEW ADDED AFTER AASHIK LEFT -->
+                    <!-- <div id="transcription-editor" style="display: none; margin-top: 20px;">
+                        <h3>Edit Medical Transcript</h3>
+                        <textarea id="editable-transcript" rows="10" style="width: 100%; padding: 10px;"></textarea>
+                        <button id="save-transcript-btn" class="capture-btn" style="margin-top: 10px;">💾 Save Transcript</button>
+                    </div> -->
+
+                <!-- </div> -->
+  
+                {% endfor %}
+                {% else %}
+                <p>Select a patient to begin recording.</p>
+                {% endif %}
+            </section>
+  
+  
+          </div>
+          
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ url_for('static', filename='js/doctor_view.js') }}"></script>
+        
+</body>
+</html>

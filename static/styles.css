@@ -1,0 +1,587 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fdf6ee;
+    text-align: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 2px solid #007bff;
+    background-color: white;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.about-btn {
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.hero {
+    padding: 80px 20px;
+}
+
+.hero h1 {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.hero p {
+    font-size: 16px;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;           /* Treat <a> like a block for padding */
+    text-decoration: none;           /* Remove underline from links */
+    background-color: #8d4aff;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    margin: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: #7a39db;
+}
+footer {
+    background-color: white;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.footer-left {
+    text-align: left;
+}
+
+.social-icons span {
+    margin-right: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.column {
+    text-align: left;
+}
+
+.column p {
+    margin: 5px 0;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f0ea;
+}
+
+/* Navbar */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
+    border-bottom: 2px solid #000;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+    margin: 0 10px;
+}
+
+.nav-btn {
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Main Container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Upcoming Patients Section */
+.upcoming-patients {
+    display: flex;
+    gap: 1.5rem;
+    width: 90%;
+    overflow-x: auto;
+    background-color: #e8e0d8;
+    padding: 20px;
+    border-radius: 12px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.patient-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    width: 180px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.patient-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.date-time-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.date-chip,
+.time-chip {
+    font-size: 14px;
+    background-color: #eaf1ff;
+    color: #007bff;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.patient-info {
+    text-align: center;
+}
+
+.patient-info img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 6px;
+    object-fit: cover;
+}
+
+.visit-reason {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+
+/* Grouping Sidebar and Visit Section */
+.bottom-section {
+    display: flex;
+    width: 93%;
+    gap: 20px;
+    align-items: stretch; /* Key for full-height right panel */
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 25%;
+    background-color: #d6cec6;
+    padding: 20px;
+    min-height: 660px;
+    max-height: 600px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Patient Info Card */
+  .patient-info-card {
+    background-color: white;
+    padding: 16px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  }
+  .patient-info-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+  
+  .patient-details img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .patient-name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .patient-role,
+  .patient-email {
+    font-size: 13px;
+    color: #777;
+    margin-top: 2px;
+  }
+  
+  /* Past Visits */
+  .past-visits {
+    margin-top: 10px;
+    width: 100%;
+    margin-top: 20px;
+    overflow-y: auto;
+    overflow-x: hidden; 
+    flex-grow: 1;
+    padding-right: 4px;
+  }
+  
+  
+  .visit {
+    background-color: white;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 12px;
+    font-size: 14px;
+    max-width: 100%;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .visit:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+  /* Section Headers */
+  .section-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-align: center;
+    color: #444;
+  }
+  
+  /* Start Visit Section */
+  .visit-section {
+    flex: 1;
+    background-color: #e8e0d8;
+    padding: 30px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .full-height-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Visit Section Content */
+  .visit-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #444;
+  }
+  
+  .audio-visual {
+    font-size: 20px;
+    color: #7ac4f2;
+    margin: 20px 0;
+  }
+  
+  .capture-btn {
+    background-color: #b499d4;
+    color: white;
+    padding: 14px 24px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .capture-btn:hover {
+    background-color: #a280c5;
+  }
+  
+/* Login page specific styles */
+.login-body {
+    background-color: #b6ccf0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    width: 800px;
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+.login-left {
+    width: 50%;
+    background-color: #a6e3e9;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.login-left h2 {
+    font-size: 32px;
+    color: #333;
+}
+
+.login-left span {
+    color: teal;
+}
+
+.login-left img {
+    width: 150px;
+    margin-top: 30px;
+}
+
+.login-right {
+    width: 50%;
+    padding: 40px;
+}
+
+.login-right select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.login-right h2 {
+    color: #008080;
+    margin-bottom: 25px;
+}
+
+.login-right label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+.login-right input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.btn.full {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn.full:hover {
+    background: linear-gradient(to right, #00f2fe, #4facfe);
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
+.form-footer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.form-footer a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+/* Patient Dashboard Specific Styling */
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    margin-top: 60px;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.booking-form {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.booking-form label {
+    font-weight: bold;
+    color: #444;
+    font-size: 15px;
+}
+
+.booking-form select,
+.booking-form input[type="datetime-local"] {
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.visit {
+    background-color: #f2f2f2;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.visit p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+h2, h3 {
+    color: #444;
+    font-weight: 700;
+}
+
+.btn.full {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to right, #8d4aff, #5b2ac0);
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn.full:hover {
+    background: linear-gradient(to right, #5b2ac0, #8d4aff);
+}
+
+.markdown-section {
+    flex-grow: 1;
+    background-color: #fdfdfd;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow-y: auto;
+  }
+  
+  .markdown-box {
+    text-align: left;
+    max-height: 500px;
+    overflow-y: auto;
+    line-height: 1.6;
+  }
+  
+  .recording-section {
+    margin-top: 20px;
+    background-color: #f8f8f8;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recording-section button {
+    background-color: #f47777;
+    color: white;
+    font-weight: bold;
+  }
+  .capture-btn-Record {
+    margin: 5px;
+    padding: 12px 20px;
+    border-radius: 20px;
+    background-color: #f67b7b;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
