@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients | Medicod</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('doctor_view') }}">
+            <div class="logo">Medicod</div>
+          </a>
+        <nav>
+            <a href="{{ url_for('doctor_view') }}">Dashboard</a>
+            <a href="{{ url_for('patients_page') }}">Patients</a>    
+            <button class="nav-btn">Logout</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2 class="section-heading" style="font-size: 40px;">ALL PATIENTS</h2>
+        <section class="patients-grid">
+            {% for patient in patients %}
+            <a href="#" class="patient-card-list">
+                <div class="card-title">Patient</div>
+                <div class="patient-info">
+                    <img src="{{ patient.profile_image or url_for('static', filename='default_avatar.jpg') }}" alt="Patient">
+                    <p><strong>{{ patient.name }}</strong></p>
+                    <p class="visit-reason">{{ patient.email }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </section>
+    </div>
+</body>
+</html>

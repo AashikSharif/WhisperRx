@@ -5,14 +5,17 @@
     <meta charset="UTF-8">
     <title>Doctor Dashboard | Medicod</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
     <header>
+      <a href="{{ url_for('doctor_view') }}">
         <div class="logo">Medicod</div>
+      </a>
         <nav>
             <a href="#">Dashboard</a>
-            <a href="#">Patients</a>
-            <a href="#">Reports</a>
+            <a href="{{ url_for('patients_page') }}">Patients</a>
             <button class="nav-btn">Logout</button>
         </nav>
     </header>
@@ -55,7 +58,7 @@
                 </div>
           
                 <div class="past-visits">
-                  <h4 class="section-title">Past Visits</h4>
+                  <h4 class="section-title" style="font-size: 20px;">Past Visits</h4>
                   {% if entry.past_visits %}
                     {% for v in entry.past_visits %}
                     <div class="visit">
@@ -87,41 +90,58 @@
            
             <!-- Visit Recorder (default visible) -->
             <section class="visit-section full-height-panel" id="visit-section">
-                <h2>Start a Visit</h2>
-                <div class="audio-visual">🔊 🎤 📊</div>
+              <h1 class="visit-title">Start a Visit</h1>
             
-                {% if selected_patient_data %}
-                {% for entry in selected_patient_data %}
-                    <p><strong>{{ entry.patient['patient_name'] }}</strong></p>
+              {% if selected_patient_data %}
+              {% for entry in selected_patient_data %}
+              <div class="visit-container">
             
-                <!-- Microphone Recorder Section -->
-                <!-- <div class="recording-section"> -->
-                    <input type="hidden" id="patient_id" value="{{ entry.patient['patient_id'] }}">
-                    <input type="hidden" id="patient_name" value="{{ entry.patient['patient_name'] }}">
-                    <input type="hidden" id="reason" value="{{ entry.patient['reason'] }}">
+                <!-- Patient Info -->
+                <div class="visit-patient-header">
+                  <h3>{{ entry.patient['patient_name'] }}</h3>
+                  <input type="hidden" id="patient_id" value="{{ entry.patient['patient_id'] }}">
+                  <input type="hidden" id="patient_name" value="{{ entry.patient['patient_name'] }}">
+                  <input type="hidden" id="reason" value="{{ entry.patient['reason'] }}">
+                </div>
+                <p class="hint">Speak naturally. We’ll handle the rest.</p>
 
-                    <button id="record-btn" class="capture-btn-Record">🎙️ Start Recording</button>
-                    <button id="pause-btn" class="capture-btn-Record" style="display: none;">⏸️ Pause</button>
-                    <button id="resume-btn" class="capture-btn-Record" style="display: none;">▶️ Resume</button>
+            
+                <!-- Voice Visualizer -->
+                <div class="voice-visualizer-wrap">
+                  <div id="voice-visualizer" class="pulsating-circle" style="display: none;"></div>
+                  <p id="listening-text" class="listening-label" style="display: no; visibility: hidden;"> Listening...</p>
+                </div>
+            
+                <!-- Controls -->
+                <div class="recording-controls">
+                  <button id="record-btn" class="record-btn record-btn--action">
+                    <i class="fas fa-microphone"></i> Start Recording
+                  </button>
+                
+                  <button id="pause-btn" class="record-btn record-btn--action" style="display: none;">
+                    <i class="fas fa-pause"></i> Pause
+                  </button>
+                
+                  <button id="resume-btn" class="record-btn record-btn--action" style="display: none;">
+                    <i class="fas fa-play"></i> Resume
+                  </button>
+                </div>
+                
+                <p id="live-timer" class="live-timer" style="display: none;">⏱️ 00:00</p>
 
-                    <audio id="audio-preview" controls style="display: none; margin-top: 10px;"></audio>
-                    <p id="transcript-output" style="margin-top: 10px;"></p>
-
-                <!-- NEW ADDED AFTER AASHIK LEFT -->
-                    <!-- <div id="transcription-editor" style="display: none; margin-top: 20px;">
-                        <h3>Edit Medical Transcript</h3>
-                        <textarea id="editable-transcript" rows="10" style="width: 100%; padding: 10px;"></textarea>
-                        <button id="save-transcript-btn" class="capture-btn" style="margin-top: 10px;">💾 Save Transcript</button>
-                    </div> -->
-
-                <!-- </div> -->
-  
-                {% endfor %}
-                {% else %}
-                <p>Select a patient to begin recording.</p>
-                {% endif %}
+                <!-- Audio Preview -->
+                <audio id="audio-preview" controls style="display: none; margin-top: 10px;"></audio>
+            
+                <!-- Transcript Feedback -->
+                <p id="transcript-output" class="transcript-text" style="margin-top: 12px;"></p>
+            
+              </div>
+              {% endfor %}
+              {% else %}
+              <p>Select a patient to begin recording.</p>
+              {% endif %}
             </section>
-  
+            
   
           </div>
           

@@ -17,7 +17,26 @@ header {
 .logo {
     font-size: 24px;
     font-weight: bold;
+    color: #333;
+    text-decoration: none;  /* Removes underline */
+    cursor: pointer;
+  }
+  a.logo {
+    text-decoration: none !important;
+    color: #333 !important;
+    font-weight: bold;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  a.logo:link,
+a.logo:visited,
+a.logo:hover,
+a.logo:active {
+  text-decoration: none !important;
+  color: inherit !important;
 }
+
+  
 
 .about-btn {
     background-color: black;
@@ -129,13 +148,27 @@ nav a {
 }
 
 .nav-btn {
-    background-color: black;
-    color: white;
-    padding: 5px 10px;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
     border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
-}
-
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-btn:hover {
+    background-color: #333;
+    transform: translateY(-1px);
+  }
+  
+  .nav-btn:active {
+    transform: scale(0.98);
+  }
+  
 /* Main Container */
 .container {
     display: flex;
@@ -155,7 +188,15 @@ nav a {
     padding: 20px;
     border-radius: 12px;
     justify-content: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+}
+.upcoming-patients::-webkit-scrollbar {
+    height: 8px;
+}
+
+.upcoming-patients::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
 }
 
 .patient-card {
@@ -164,7 +205,8 @@ nav a {
     padding: 16px;
     width: 180px;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    flex: 0 0 auto; 
     transition: all 0.2s ease;
     text-decoration: none;
     color: inherit;
@@ -177,7 +219,7 @@ nav a {
 
 .card-title {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 8px;
     color: #333;
 }
@@ -203,15 +245,15 @@ nav a {
 }
 
 .patient-info img {
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     margin-bottom: 6px;
     object-fit: cover;
 }
 
 .visit-reason {
-    font-size: 12px;
+    font-size: 16px;
     color: #6c757d;
     margin-top: 2px;
 }
@@ -244,7 +286,7 @@ nav a {
     border-radius: 16px;
     text-align: center;
     margin-bottom: 20px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
   .patient-info-card:hover {
     transform: scale(1.03);
@@ -252,8 +294,8 @@ nav a {
 }
   
   .patient-details img {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
@@ -291,7 +333,7 @@ nav a {
     margin-top: 12px;
     font-size: 14px;
     max-width: 100%;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
   
   .visit:hover {
@@ -319,7 +361,7 @@ nav a {
   }
   
   .full-height-panel {
-    display: flex;
+    display: block;
     flex-direction: column;
     justify-content: center;
   }
@@ -574,7 +616,7 @@ h2, h3 {
     color: white;
     font-weight: bold;
   }
-  .capture-btn-Record {
+  /* .capture-btn-Record {
     margin: 5px;
     padding: 12px 20px;
     border-radius: 20px;
@@ -583,5 +625,253 @@ h2, h3 {
     border: none;
     font-weight: bold;
     cursor: pointer;
+  } */
+  .capture-btn-Record {
+    margin-top: 40px;
+    padding: 12px 24px;
+    background-color: #00bcd4;
+    color: black;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .capture-btn-Record:hover {
+    background-color: #00acc1;
+  }
+
+
+
+
+  .pulsating-circle {
+    animation-play-state: running;
+    width: 120px;
+    height: 120px;
+    margin: 20px auto;
+    border-radius: 50%;
+    border: 5px solid hsl(340, 100%, 80%);
+    box-shadow: 0 0 25px hsl(340, 100%, 80%);
+    animation: pulse 1.5s ease-in-out infinite, colorShift 6s linear infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes colorShift {
+    0%   { border-color: hsl(340, 100%, 80%); box-shadow: 0 0 25px hsl(340, 100%, 80%); }
+    25%  { border-color: hsl(200, 100%, 80%); box-shadow: 0 0 25px hsl(200, 100%, 80%); }
+    50%  { border-color: hsl(120, 100%, 80%); box-shadow: 0 0 25px hsl(120, 100%, 80%); }
+    75%  { border-color: hsl(45, 100%, 80%);  box-shadow: 0 0 25px hsl(45, 100%, 80%);  }
+    100% { border-color: hsl(340, 100%, 80%); box-shadow: 0 0 25px hsl(340, 100%, 80%); }
+  }
+  
+  .patients-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: flex-start;
+}
+
+/* .patient-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    width: 200px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+    text-decoration: none;
+    color: inherit;
+} */
+
+/* .patient-card:hover {
+    transform: scale(1.05);
+} */
+
+.patient-card-list {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    height: 250px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+    /* Flexbox for vertical alignment */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertical centering */
+    align-items: center;     /* Horizontal centering */
+}
+
+.patient-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+.patient-card .card-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.patient-card .patient-info img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+}
+
+
+.visit-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #222;
+  }
+  
+  .visit-container {
+    background: #f8f6f4;
+    padding: 20px;
+    width: 80%;
+    border-radius: 12px;
+    margin: 0 auto 20px auto; /* This centers it horizontally */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  .visit-patient-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #444;
+  }
+  
+  .voice-visualizer-wrap {
+    flex-direction: column;
+    align-items: center;
+    margin: 18px 0;
+  }
+  
+  .listening-label {
+    font-size: 16px;
+    margin-top: 8px;
+    color: #555;
+    font-weight: 500;
+  }
+  
+  .recording-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  
+  .transcript-text {
+    color: #333;
+    font-size: 15px;
+    font-style: italic;
+  }
+
+  .capture-btn-Record i {
+    margin-right: 8px;
+    font-size: 16px;
+    vertical-align: middle;
+
+  }
+  
+  #listening-text {
+    height: 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #5a5a5a;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  
+  .live-timer {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 20px;
+    color: #000000;
+    margin-top: 12px;
+    text-align: center;
+  }
+  
+  
+  .hint {
+    font-size: 13px;
+    color: #777;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  
+  .record-btn {
+    padding: 15px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.5s ease; 
+  }
+  
+  .record-btn--action {
+    display: block;
+    width: 30%;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    background-color: #f6e58d;
+    color: #000;
+    transition: all 0.5s ease 0s; 
+    box-shadow: 0 10px #f9ca24;
+  }
+  
+  .record-btn--action span {
+    display: inline-block;
+    position: relative;
+    transition: all 0.5s ease;
+  }
+  
+  .record-btn--action span::before {
+    content: '\f04c'; 
+    color: #000;
+    font-size: 1rem;
+    font-family: FontAwesome;
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 1.5rem;
+    opacity: 0;
+    transition: all 0.1s ease 0s;
+  }
+  
+  .record-btn--action:hover span {
+    padding-left: 1.5rem; 
+  }
+  
+  .record-btn--action:hover span::before {
+    left: 0;
+    opacity: 1;
+  }
+  
+  .record-btn--action:active {
+    box-shadow: 0 5px #f0932b;
+    transform: translateY(5px);
   }
   
