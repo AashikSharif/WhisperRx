@@ -1,1 +1,1 @@
-# WhisprMed
+# WhisperRx

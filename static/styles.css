@@ -51,14 +51,15 @@ a.logo:active {
 }
 
 .hero h1 {
-    font-size: 32px;
+    font-size: 45px;
     font-weight: bold;
 }
 
 .hero p {
-    font-size: 16px;
+    font-size: 20px;
     color: #555;
     max-width: 600px;
+    text-align: center;
     margin: 0 auto;
 }
 
@@ -83,11 +84,6 @@ a.logo:active {
 
 .btn:hover {
     background-color: #7a39db;
-}
-footer {
-    background-color: white;
-    padding: 20px;
-    margin-top: 50px;
 }
 
 .footer-content {
@@ -154,6 +150,7 @@ nav a {
     border: none;
     border-radius: 8px;
     font-size: 1rem;
+    text-decoration: none;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
@@ -285,6 +282,7 @@ nav a {
     padding: 16px;
     border-radius: 16px;
     text-align: center;
+    cursor:pointer;
     margin-bottom: 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
@@ -316,13 +314,52 @@ nav a {
   
   /* Past Visits */
   .past-visits {
-    margin-top: 10px;
-    width: 100%;
-    margin-top: 20px;
+    max-height: 400px; /* Adjust height as needed */
     overflow-y: auto;
-    overflow-x: hidden; 
-    flex-grow: 1;
-    padding-right: 4px;
+    padding-right: 8px;
+    margin-top: 10px;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #ccc transparent;
+  }
+  
+  /* For WebKit browsers */
+  .past-visits::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .past-visits::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .past-visits::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  
+  .visit-scroll-area {
+    max-height: 100%;
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+  }
+
+  /* Scrollbar Styling for WebKit */
+  .visit-scroll-area::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .visit-scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .visit-scroll-area::-webkit-scrollbar-thumb {
+    background-color: #b3b3b3;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
   }
   
   
@@ -334,6 +371,7 @@ nav a {
     font-size: 14px;
     max-width: 100%;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    cursor:pointer;
   }
   
   .visit:hover {
@@ -364,6 +402,14 @@ nav a {
     display: block;
     flex-direction: column;
     justify-content: center;
+  }
+  
+  .visit-section.full-height-panel {
+    /* min-height: 70vh; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-block-end: auto;
   }
   
   /* Visit Section Content */
@@ -538,17 +584,18 @@ nav a {
 .booking-form label {
     font-weight: bold;
     color: #444;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .booking-form select,
 .booking-form input[type="datetime-local"] {
     padding: 10px;
-    font-size: 15px;
+    font-size: 20px;
     border-radius: 6px;
     border: 1px solid #ccc;
-    width: 100%;
+    width: 50%;
     box-sizing: border-box;
+    height: 70px;
 }
 
 
@@ -722,6 +769,8 @@ h2, h3 {
 .patient-card:hover {
     transform: scale(1.03);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    cursor:pointer;
+
 }
 
 
@@ -778,7 +827,7 @@ h2, h3 {
   
   .recording-controls {
     display: flex;
-    gap: 12px;
+    gap: 20px;
     justify-content: center;
     margin-bottom: 12px;
   }
@@ -816,7 +865,7 @@ h2, h3 {
   
   
   .hint {
-    font-size: 13px;
+    font-size: 16px;
     color: #777;
     text-align: center;
     margin-bottom: 16px;
@@ -829,11 +878,23 @@ h2, h3 {
     text-decoration: none;
     text-align: center;
     transition: all 0.5s ease; 
+    cursor:pointer;
+
   }
   
   .record-btn--action {
     display: block;
     width: 30%;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    background-color: #f6e58d;
+    color: #000;
+    transition: all 0.5s ease 0s; 
+    box-shadow: 0 10px #f9ca24;
+  }
+  .record-btn--home {
+    display: block;
+    width: 15%;
     padding: 1rem;
     border-radius: 1.5rem;
     background-color: #f6e58d;
@@ -874,4 +935,188 @@ h2, h3 {
     box-shadow: 0 5px #f0932b;
     transform: translateY(5px);
   }
+
+.record-btn--home span {
+    display: inline-block;
+    position: relative;
+    transition: all 0.5s ease;
+  }
   
+  .record-btn--home span::before {
+    content: '\f04c'; 
+    color: #000;
+    font-size: 1rem;
+    font-family: FontAwesome;
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 1.5rem;
+    opacity: 0;
+    transition: all 0.3s ease 0.3s;
+  }
+  
+  
+  
+  .record-btn--home:active {
+    box-shadow: 0 -2px #f0932b;
+    transform: translateY(10px);
+  }
+
+
+
+  .flash {
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin: 20px;
+    font-weight: 500;
+    text-align: center;
+  }
+  
+  .flash.info {
+    background-color: #d0ebff;
+    color: #004085;
+  }
+  
+  .flash.success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .flash.error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  .flash-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: auto;
+    max-width: 80%;
+    text-align: center;
+  }
+  
+  .flash-message {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+    font-size: 16px;
+    gap: 12px;
+  }
+  
+  .flash-message.success { background-color: #4caf50; }
+  .flash-message.error { background-color: #f44336; }
+  .flash-message.info { background-color: #2196f3; }
+  
+  .flash-message .close-flash {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  
+  @keyframes slideFade {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  
+  
+  .hero {
+    padding: 80px 20px;
+    text-align: center;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #222;
+  }
+  
+  .hero-subtitle {
+    margin-top: 10px;
+    font-size: 1.1rem;
+
+    color: #444;
+  }
+  
+  .hero-buttons {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
+  
+  /* Footer tweaks */
+  
+  footer {
+  background-color: #f4f0eb;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+  .homepage-footer {
+    padding: 40px 20px;
+    background-color: #f4f0eb;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  .footer-brand {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .footer-topic {
+    font-weight: 600;
+  }
+  .hero-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh; /* leave room for header */
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .form-control {
+    width: 50%;
+    padding: 10px;
+    height: 70px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 20px;
+    cursor:pointer;
+  }
+  
+  
+  input[readonly] {
+    cursor: pointer;
+    background-color: #fdfdfd;
+  }
+  
+
+  .flex-wrapper {
+    display: flex;
+    min-height: 38vh;
+    flex-direction: column;
+    justify-content: space-between;
+  }

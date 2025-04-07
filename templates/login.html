@@ -1,42 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login | Medicod</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <meta charset="UTF-8">
+  <title>Login | WhisperRx</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="login-body">
-    <div class="login-container">
-        <div class="login-left">
-            <h2>HELLO <span>!</span></h2>
-            <p>Please enter your details to continue</p>
-            <img src="{{ url_for('static', filename='uploads/images/doctor.webp') }}" alt="Doctor Icon">
-        </div>
-        <div class="login-right">
-            <h2>LOGO Hospital</h2>
-            <form method="POST">
-                <label>E-mail</label>
-                <input type="email" name="email" placeholder="your@email.com" required>
+<body class="min-h-screen flex items-center justify-center p-4" style="background-color: #e8e0d8;">
 
-                <label>Password</label>
-                <input type="password" name="password" placeholder="Password" required>
+  <div class="w-full max-w-md space-y-6 bg-white p-6 rounded-lg shadow-lg">
 
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                  {% if messages %}
-                    {% for category, message in messages %}
-                      <p class="error">{{ message }}</p>
-                    {% endfor %}
-                  {% endif %}
-                {% endwith %}
-
-                <button type="submit" class="btn full">Log in</button>
-
-                <div class="form-footer">
-                    <span>Do Not Have Account? <a href="{{ url_for('signup') }}">Sign Up</a></span>
-                </div>
-                
-            </form>
-        </div>
+    
+    <div class="text-left">
+      <a href="{{ url_for('index') }}" class="text-sm text-blue-600 hover:underline">
+        ← Back to Home
+      </a>
     </div>
+
+    <div class="text-center">
+      <div class="flex justify-center items-center gap-2 text-lg font-medium mb-4">
+        WhisperRx
+      </div>
+      <h1 class="text-2xl font-semibold">Welcome back</h1>
+      <p class="text-gray-500 text-sm">Login with your credentials</p>
+    </div>
+
+    <form method="POST" class="space-y-5">
+      <div>
+        <label for="email" class="block text-sm font-medium">Email</label>
+        <input type="email" name="email" id="email" placeholder="email"
+               class="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium">Password</label>
+        <input type="password" name="password" id="password" placeholder="password"
+               class="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <p class="text-red-600 text-sm">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <button
+        type="submit"
+        class="w-full text-black font-semibold py-2 rounded-md transition"
+        style="background-color: #F6E58D;"
+      >
+        Login
+      </button>
+
+      <div class="text-sm text-center">
+        Don't have an account?
+        <a href="{{ url_for('signup') }}" class="text-blue-600 hover:underline">Sign up</a>
+      </div>
+    </form>
+
+    <p class="text-xs text-center text-gray-400">
+      By logging in, you agree to our <a href="#" class="underline">Terms</a> and <a href="#" class="underline">Privacy Policy</a>.
+    </p>
+  </div>
+
 </body>
+
 </html>

@@ -3,20 +3,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Doctor Dashboard | Medicod</title>
+    <title>Doctor Dashboard | WhisperRx</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
 <body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-container">
+      {% for category, message in messages %}
+        <div class="flash-message {{ category }}">
+          <span>{{ message }}</span>
+          <button class="close-flash" onclick="this.parentElement.style.display='none';">&times;</button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
     <header>
-      <a href="{{ url_for('doctor_view') }}">
-        <div class="logo">Medicod</div>
+      <a href="{{ url_for('doctor_view') }}" style="text-decoration: none;">
+        <div class="logo">WhisperRx</div>
       </a>
         <nav>
             <a href="#">Dashboard</a>
             <a href="{{ url_for('patients_page') }}">Patients</a>
-            <button class="nav-btn">Logout</button>
+            <a href="{{ url_for('logout') }}" class="nav-btn">Logout</a>
         </nav>
     </header>
 
@@ -45,7 +58,7 @@
           
           <div class="bottom-section">
             <!-- Sidebar -->
-            <aside class="sidebar">
+            <aside class="sidebar" style="max-height: 707px;">
               {% if selected_patient_data %}
                 {% for entry in selected_patient_data %}
                 <div class="patient-info-card">
@@ -56,9 +69,9 @@
                     <p class="patient-email">{{ entry.patient['email'] }}</p>
                   </div>
                 </div>
-          
+                <h4 class="section-title" style="font-size: 20px;">Past Visits</h4>
                 <div class="past-visits">
-                  <h4 class="section-title" style="font-size: 20px;">Past Visits</h4>
+                  
                   {% if entry.past_visits %}
                     {% for v in entry.past_visits %}
                     <div class="visit">
@@ -149,6 +162,22 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="{{ url_for('static', filename='js/doctor_view.js') }}"></script>
-        
+    <script>
+      setTimeout(() => {
+        document.querySelectorAll('.flash-message').forEach(msg => {
+          msg.style.display = 'none';
+        });
+      }, 5000); // Hides after 5 seconds
+    </script>
+    
 </body>
+<footer>
+  <p>© 2025 WhisperRx | All Rights Reserved</p>
+  <p style="margin-top: 6px;">
+    Created by 
+    <a href="https://www.linkedin.com/in/aashiksharif/" target="_blank" style="color: black; text-decoration: underline;">Aashik Sharif Basheer Ahamed</a> &amp; 
+    <a href="https://www.linkedin.com/in/shlok-tomar/" target="_blank" style="color: black; text-decoration: underline;">Shlok Tomar</a>
+  </p>
+</footer>
+
 </html>

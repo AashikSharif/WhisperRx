@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About | WhisperRx</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <style>
+    /* Add this quick CSS override if not already in your styles.css */
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1;
+    }
+    footer {
+      text-align: center;
+      background-color: #f4f0eb;
+      padding: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body class="homepage-body">
+
+  <header class="homepage-header">
+    <a href="{{ url_for('index') }}" class="logo">WhisperRx</a> 
+    <a href="{{ url_for('index') }}" class="nav-btn">Home</a>
+  </header>
+
+  <main class="hero-container">
+    <section class="hero about-section">
+      <h1 class="hero-title">About WhisperRx</h1>
+      <p class="hero-subtitle" style="max-width: 700px; margin: 1rem auto; line-height: 1.8;">
+        WhisperRx is an AI-powered medical scribing tool designed to assist doctors in creating structured, accurate, and efficient medical reports from audio conversations. Using the latest advancements in speech-to-text (via Whisper) and natural language generation (via LLaMA 3), WhisperRx transforms voice recordings into complete, structured medical notes in real time.
+      </p>
+
+      <div class="about-content" style="max-width: 750px; margin: 2rem auto; font-size: 18px;">
+        <ul style="text-align: left; line-height: 1.8;">
+          <li><strong>Voice-Based Input:</strong> Record consultations and let the AI transcribe and structure them.</li>
+          <li><strong>Intelligent Summarization:</strong> Leveraging LLaMA-3, we generate SOAP-format medical summaries automatically.</li>
+          <li><strong>Designed for Doctors & Patients:</strong> Two unique dashboards to streamline workflows for both sides.</li>
+          <li><strong>Easy Access:</strong> Review past visits, view structured transcripts, and download reports easily.</li>
+          <li><strong>Privacy & Security:</strong> All data is securely handled with role-based access control.</li>
+        </ul>
+      </div>
+
+      <div class="hero-buttons">
+        <a href="{{ url_for('login') }}" class="record-btn record-btn--home">
+          <span>Login</span>
+        </a>
+        <a href="{{ url_for('signup') }}" class="record-btn record-btn--home">
+          <span>Signup</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 WhisperRx | All Rights Reserved</p>
+    <p style="margin-top: 6px;">
+      Created by 
+      <a href="https://www.linkedin.com/in/aashiksharif/" target="_blank" style="color: black; text-decoration: underline;">Aashik Sharif Basheer Ahamed</a> &amp; 
+      <a href="https://www.linkedin.com/in/shlok-tomar/" target="_blank" style="color: black; text-decoration: underline;">Shlok Tomar</a>
+    </p>
+  </footer>
+
+</body>
+</html>

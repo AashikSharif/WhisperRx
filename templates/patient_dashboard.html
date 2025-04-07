@@ -3,21 +3,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Patient Dashboard | Medicod</title>
+    <title>Patient Dashboard | WhisperRx</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+     
+
+
 </head>
 <body>
+    <!-- For showing login logout related information -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="flash-message {{ category }}">
+            <span>{{ message }}</span>
+            <button class="close-flash" onclick="this.parentElement.style.display='none';">&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+      
     <header>
-            <a href="{{ url_for('doctor_view') }}">
-            <div class="logo">Medicod</div>
+            <a href="{{ url_for('patient_dashboard') }}" style="text-decoration: none;">
+            <div class="logo">WhisperRx</div>
           </a>
           
         <nav>
-            <a href="#">Dashboard</a>
-            <a href="#">Doctors</a>
-            <a href="#">Reports</a>
-            <button class="nav-btn">Logout</button>
+            <a href="{{ url_for('patient_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('doctors_page') }}">Doctors</a>
+            <a href="{{ url_for('logout') }}" class="nav-btn">Logout</a>
         </nav>
     </header>
 
@@ -52,52 +69,138 @@
                         <p class="patient-email">{{ patient.email }}</p>
                     </div>
                 </div>
-
+                <h4 class="section-title">Your Past Visits</h4>
                 <div class="past-visits">
-                    <h4 class="section-title">Your Past Visits</h4>
-                    {% for visit in past_visits %}
+                  
+                  {% if past_visits %}                  
+                  {% for visit in past_visits %}
                     <div class="visit">
-                        <p><strong>Visit Date:</strong></p>
-                        <div class="date-time-row">
-                            <span class="date-chip">{{ visit.timestamp.strftime('%b %d, %Y') }}</span>
-                            <span class="time-chip">{{ visit.timestamp.strftime('%I:%M %p') }}</span>
-                        </div>  
-                        <p><strong>Reason:</strong> {{ visit.reason or 'N/A' }}</p>
-                        <span class="visit-transcript" style="display: none;">{{ visit.transcript }}</span>
+                      <p><strong>Visit Date:</strong></p>
+                      <div class="date-time-row">
+                        <span class="date-chip">{{ visit.timestamp.strftime('%b %d, %Y') }}</span>
+                        <span class="time-chip">{{ visit.timestamp.strftime('%I:%M %p') }}</span>
+                      </div>  
+                      <p><strong>Reason:</strong> {{ visit.reason or 'N/A' }}</p>
+                      <span class="visit-transcript" style="display: none;">{{ visit.transcript }}</span>
                     </div>
-                    {% endfor %}
+                  {% endfor %}
+                  {% else %}
+                    <p style="color: gray;">No past visits recorded for this patient.</p>
+                  {% endif %}
                 </div>
+                
+                
             </aside>
 
-            <!-- Markdown Viewer -->
+            <!-- Markdown Viewer (hidden by default) -->
             <section class="markdown-section" id="markdown-viewer" style="display: none;">
-                <h2>Visit Transcript</h2>
-                <div id="markdown-content" class="markdown-box"></div>
-            </section>
+              <h2>Medical Record</h2>
+              <div id="markdown-content" class="markdown-box"> 
+              </div>
+          </section>
 
             <!-- Appointment Booking -->
-            <section class="visit-section full-height-panel" id="visit-section">
-                <h2>Book an Appointment</h2>
-                <form method="POST">
-                    <label for="doctor_id">Select Doctor:</label>
-                    <select name="doctor_id" required>
-                        {% for doctor in doctors %}
-                        <option value="{{ doctor.id }}">{{ doctor.name }}</option>
-                        {% endfor %}
+            <section class="visit-section full-height-panel visit-booking" id="visit-section">
+                <h2 style="font-size: 28px; font-weight: 600; text-align: center; margin-bottom: 24px;">📅 Book an Appointment</h2>
+                
+                <form method="POST" class="booking-form" style="display: flex; flex-direction: column; gap: 20px;">
+                  
+                  <!-- Doctor Dropdown -->
+                <div class="form-group">
+                    <label for="doctor_id" style="font-weight: 500;">Select Doctor:</label><br>
+                    <select name="doctor_id" required class="form-control">
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+                    {% endfor %}
                     </select>
-                    <br><br>
-                    <label for="reason">Reason:</label>
-                    <input type="text" name="reason" required>
-                    <br><br>
-                    <label for="timestamp">Appointment Time:</label>
-                    <input type="datetime-local" name="timestamp" required>
-                    <br><br>
-                    <button type="submit" class="capture-btn">📅 Book Appointment</button>
+                </div>
+                
+                <!-- Reason -->
+                <div class="form-group">
+                    <label for="reason" style="font-weight: 500;">Reason for Visit:</label><br>
+                    <input type="text" name="reason" required class="form-control" placeholder="e.g., Consultation, Check-up">
+                </div>
+                
+                <!-- Appointment Date -->
+                <!-- <div class="form-group">
+                    <label for="timestamp" style="font-weight: 500;">Appointment Date & Time:</label><br>
+                    <input type="datetime-local" name="timestamp" required class="form-control">
+                </div> -->
+                <div class="form-group">
+                  <label for="timestamp" style="font-weight: 500;">Appointment Date & Time:</label><br>
+                  <input
+                    type="text"
+                    id="timestamp"
+                    name="timestamp"
+                    required
+                    class="form-control"
+                    placeholder="Select Date & Time"
+                    readonly 
+                  >
+                </div>
+
+                  <!-- Submit Button -->
+                    <div class="form-group" style="display: flex; justify-content: center; margin-top: 10px;">
+                        <button type="submit" class="record-btn record-btn--action">
+                        Book Appointment
+                        </button>
+                    </div>
+  
                 </form>
-            </section>
+              </section>
+              
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/doctor_view.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/doctor_view.js') }}"></script> -->
+    <script>
+        setTimeout(() => {
+          document.querySelectorAll('.flash-message').forEach(msg => {
+            msg.style.display = 'none';
+          });
+        }, 5000);
+      </script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+      flatpickr("#timestamp", {
+        enableTime: true,
+        dateFormat: "Y-m-d h:i K",   // AM/PM format
+        time_24hr: false,
+        altInput: true,
+        altFormat: "F j, Y - h:i K", // Friendly UI
+        allowInput: false            // disables manual typing just in case
+      });
+    </script>
+
+<script>
+  document.querySelectorAll('.visit').forEach(el => {
+    el.addEventListener('click', () => {
+      const transcript = el.querySelector('.visit-transcript')?.textContent || '';
+
+      // Show markdown viewer and hide the visit booking section
+      document.getElementById('visit-section').style.display = 'none';
+      document.getElementById('markdown-viewer').style.display = 'block';
+      document.getElementById('markdown-content').innerHTML = marked.parse(transcript);
+    });
+  });
+
+  // Optional: If you want clicking the profile section to reset the view
+  document.querySelector('.patient-info-card').addEventListener('click', () => {
+    document.getElementById('visit-section').style.display = 'block';
+    document.getElementById('markdown-viewer').style.display = 'none';
+  });
+</script>
+
 </body>
+<footer>
+    <p>© 2025 WhisperRx | All Rights Reserved</p>
+    <p style="margin-top: 6px;">
+      Created by 
+      <a href="https://www.linkedin.com/in/aashiksharif/" target="_blank" style="color: black; text-decoration: underline;">Aashik Sharif Basheer Ahamed</a> &amp; 
+      <a href="https://www.linkedin.com/in/shlok-tomar/" target="_blank" style="color: black; text-decoration: underline;">Shlok Tomar</a>
+    </p>
+  </footer>
+
 </html>

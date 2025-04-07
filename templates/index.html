@@ -1,63 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicod</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhisperRx</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
-<body>
-    <header>
-        <div class="logo">Medicod</div>
-        <button class="about-btn">About</button>
-    </header>
 
-    <main>
-        <section class="hero">
-            <h1>Medicod</h1>
-            <p>Subheading that sets up context, shares more info about the website, or generally gets people psyched to keep scrolling.</p>
-            <div class="buttons">
-                <a href="{{ url_for('login') }}" class="btn">Login</a>
-                <a href="{{ url_for('signup') }}" class="btn">Signup</a>
-            </div>            
-            
-        </section>
-    </main>
+<body class="homepage-body">
+  <header class="homepage-header">
+    <a href="{{ url_for('index') }}" class="logo">WhisperRx</a>
+    <a href="{{ url_for('about_page') }}" class="nav-btn">About</a>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-left">
-                <p>Site name</p>
-                <div class="social-icons">
-                    <span>📘</span>
-                    <span>📺</span>
-                    <span>🎵</span>
-                    <span>📸</span>
-                </div>
-            </div>
-            <div class="footer-links">
-                <div class="column">
-                    <p>Topic</p>
-                    <p>Page</p>
-                    <p>Page</p>
-                    <p>Page</p>
-                </div>
-                <div class="column">
-                    <p>Topic</p>
-                    <p>Page</p>
-                    <p>Page</p>
-                    <p>Page</p>
-                </div>
-                <div class="column">
-                    <p>Topic</p>
-                    <p>Page</p>
-                    <p>Page</p>
-                    <p>Page</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+  </header>
+
+  <main class="hero-container">
+    <section class="hero">
+      <h1 class="hero-title">WhisperRx</h1>
+      <p class="hero-subtitle">
+        Revolutionizing medical documentation through voice and AI-powered scribing.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="{{ url_for('login') }}" class="record-btn record-btn--home">
+          <span>Login</span>
+        </a>
+        <a href="{{ url_for('signup') }}" class="record-btn record-btn--home">
+          <span>Signup</span>
+        </a>
+      </div>
+    </section>
+  </main>
+  <div class="flex-wrapper" style="min-height: 25vh;">
+    <footer style="margin-top: auto;">
+        <p>© 2025 WhisperRx | All Rights Reserved</p>
+        <p style="margin-top: 6px;">
+          Created by 
+          <a href="https://www.linkedin.com/in/aashiksharif/" target="_blank" style="color: black; text-decoration: underline;">Aashik Sharif Basheer Ahamed</a> &amp; 
+          <a href="https://www.linkedin.com/in/shlok-tomar/" target="_blank" style="color: black; text-decoration: underline;">Shlok Tomar</a>
+        </p>
+      </footer>
+    </div>
 </body>
+
 </html>
