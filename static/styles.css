@@ -18,7 +18,7 @@ header {
     font-size: 24px;
     font-weight: bold;
     color: #333;
-    text-decoration: none;  /* Removes underline */
+    text-decoration: none;
     cursor: pointer;
   }
   a.logo {
@@ -68,8 +68,8 @@ a.logo:active {
 }
 
 .btn {
-    display: inline-block;           /* Treat <a> like a block for padding */
-    text-decoration: none;           /* Remove underline from links */
+    display: inline-block;
+    text-decoration: none;
     background-color: #8d4aff;
     color: white;
     padding: 12px 20px;
@@ -261,7 +261,7 @@ nav a {
     display: flex;
     width: 93%;
     gap: 20px;
-    align-items: stretch; /* Key for full-height right panel */
+    align-items: stretch;
   }
   
   /* Sidebar */
@@ -314,11 +314,11 @@ nav a {
   
   /* Past Visits */
   .past-visits {
-    max-height: 400px; /* Adjust height as needed */
+    max-height: 400px;
     overflow-y: auto;
     padding-right: 8px;
     margin-top: 10px;
-    scrollbar-width: thin; /* For Firefox */
+    scrollbar-width: thin;
     scrollbar-color: #ccc transparent;
   }
   
@@ -362,7 +362,6 @@ nav a {
     background-clip: content-box;
   }
   
-  
   .visit {
     background-color: white;
     padding: 12px;
@@ -405,7 +404,6 @@ nav a {
   }
   
   .visit-section.full-height-panel {
-    /* min-height: 70vh; */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -558,7 +556,6 @@ nav a {
 }
 
 /* Patient Dashboard Specific Styling */
-
 .login-container {
     display: flex;
     flex-direction: column;
@@ -597,7 +594,6 @@ nav a {
     box-sizing: border-box;
     height: 70px;
 }
-
 
 .visit {
     background-color: #f2f2f2;
@@ -663,16 +659,7 @@ h2, h3 {
     color: white;
     font-weight: bold;
   }
-  /* .capture-btn-Record {
-    margin: 5px;
-    padding: 12px 20px;
-    border-radius: 20px;
-    background-color: #f67b7b;
-    color: white;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-  } */
+
   .capture-btn-Record {
     margin-top: 40px;
     padding: 12px 24px;
@@ -688,9 +675,6 @@ h2, h3 {
   .capture-btn-Record:hover {
     background-color: #00acc1;
   }
-
-
-
 
   .pulsating-circle {
     animation-play-state: running;
@@ -732,22 +716,6 @@ h2, h3 {
     justify-content: flex-start;
 }
 
-/* .patient-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    width: 200px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease-in-out;
-    text-decoration: none;
-    color: inherit;
-} */
-
-/* .patient-card:hover {
-    transform: scale(1.05);
-} */
-
 .patient-card-list {
     background-color: white;
     border-radius: 16px;
@@ -759,11 +727,10 @@ h2, h3 {
     transition: all 0.2s ease;
     text-decoration: none;
     color: inherit;
-    /* Flexbox for vertical alignment */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Vertical centering */
-    align-items: center;     /* Horizontal centering */
+    justify-content: center;
+    align-items: center;
 }
 
 .patient-card:hover {
@@ -954,15 +921,11 @@ h2, h3 {
     opacity: 0;
     transition: all 0.3s ease 0.3s;
   }
-  
-  
-  
+    
   .record-btn--home:active {
     box-shadow: 0 -2px #f0932b;
     transform: translateY(10px);
   }
-
-
 
   .flash {
     padding: 12px 18px;
@@ -1036,8 +999,6 @@ h2, h3 {
     }
   }
   
-  
-  
   .hero {
     padding: 80px 20px;
     text-align: center;
@@ -1107,13 +1068,11 @@ h2, h3 {
     cursor:pointer;
   }
   
-  
   input[readonly] {
     cursor: pointer;
     background-color: #fdfdfd;
   }
   
-
   .flex-wrapper {
     display: flex;
     min-height: 38vh;

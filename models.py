@@ -30,9 +30,10 @@ class Visit(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Added index for performance
     reason = db.Column(db.String(200), nullable=False)
 
-
-
+#####################################################
 # Sample users with hashed passwords
+#####################################################
+
 users = [
     User(name='Dr. Maya Sharma', email='maya.sharma@whisperrx.com', password=generate_password_hash('test123'), user_type='doctor',profile_image='/static/default_avatar.jpg'),
     User(name='Shlok Verma', email='shlok@whisperrx.com', password=generate_password_hash('test123'), user_type='patient',profile_image='/static/verma.webp'),
