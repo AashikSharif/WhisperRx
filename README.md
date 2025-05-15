@@ -1,10 +1,10 @@
-# 🩺 WhisprMed
+# 🩺 WhisperRx
 
-WhisprMed is an AI-powered medical voice scribing and patient management web application designed for doctors and patients. It simplifies the process of documenting patient visits through voice recordings, AI transcription and automatic generation of structured SOAP medical reports.
+WhisperRx is an AI-powered medical voice scribing and patient management web application designed for doctors and patients. It simplifies the process of documenting patient visits through voice recordings, AI transcription and automatic generation of structured SOAP medical reports.
 
 ## 🎥 Demo
 
-Watch a quick walkthrough of **WhisprMed** in action:
+Watch a quick walkthrough of **WhisperRx** in action:
 
 https://github.com/user-attachments/assets/3b2b46ae-8dac-424a-943d-1742da1763f4
 
@@ -47,8 +47,8 @@ https://github.com/user-attachments/assets/3b2b46ae-8dac-424a-943d-1742da1763f4
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/yourusername/whisprmed.git
-cd whisprmed
+git clone https://github.com/yourusername/whisperRx.git
+cd whisperrx
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
