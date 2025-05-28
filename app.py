@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask_cors import CORS
+
 from models import db, User, Visit, AppointmentBooking
 from config import Config
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,7 +13,7 @@ import requests
 from models import users, appointments, visits
 from dotenv import load_dotenv
 
-# Loads variables from .env file
+# Loads variables from ..env file
 load_dotenv()
 
 utc_now = datetime.utcnow()
@@ -38,6 +40,12 @@ db.init_app(app)
 mail.init_app(app)
 
 s = URLSafeTimedSerializer('your_secret_key')
+
+CORS(
+    app,
+    supports_credentials=True,
+    resources={r"/*": {"origins": "http://localhost:5173"}}
+)
 
     
 @app.route('/')
@@ -119,118 +127,143 @@ def run_llama_cloudflare(inputs, model="@cf/meta/llama-3-8b-instruct"):
 #####################################################
 #  LOGIN PAGE
 #####################################################
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+    # Expect JSON { email: "...", password: "..." }
+    print('here')
+    data = request.get_json()
+    if not data or 'email' not in data or 'password' not in data:
+        return jsonify({'error': 'Email and password required'}), 400
 
-        user = User.query.filter_by(email=email).first()
+    email = data['email']
+    password = data['password']
 
-        if not user or not check_password_hash(user.password, password):
-            flash('Invalid email or password', 'error')
-            return redirect(url_for('login'))
+    print(password)
 
-        # Save login session
-        session['user_id'] = user.id
-        session['user_type'] = user.user_type
-        session['user_name'] = user.name
+    user = User.query.filter_by(email=email).first()
+    if not user or not check_password_hash(user.password, password):
+        return jsonify({'error': 'Invalid credentials'}), 401
 
-        flash('Login successful!', 'success')
+    # Set up session cookie
+    session.clear()
+    session['user_id']   = user.id
+    session['user_type'] = user.user_type
+    session['user_name'] = user.name
 
-        # Redirect based on role
-        if user.user_type == 'doctor':
-            return redirect(url_for('doctor_view'))
-        else:
-            return redirect(url_for('patient_dashboard'))
+    # Return minimal user info for front-end routing
+    return jsonify({
+        'message': 'Login successful',
+        'user_type': user.user_type,
+        'user_name': user.name
+    }), 200
 
-    return render_template('login.html')
+@app.route('/login-status', methods=['GET'])
+def login_status():
+    # If you’re logged in, Flask has set session['user_id'], etc.
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
 
+    return jsonify({
+        'user_id':   session['user_id'],
+        'user_name': session.get('user_name'),
+        'user_type': session.get('user_type')
+    }), 200
 
 #####################################################
 #  Signup PAGE
 #####################################################
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/signup', methods=['POST'])
 def signup():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
-        user_type = request.form['user_type']
-        image = request.files['profile_image']
+    # Expect JSON: { name, email, password, user_type }
+    data = request.get_json()
+    if not data or not all(k in data for k in ('name', 'email', 'password', 'user_type')):
+        return jsonify({'error': 'Name, email, password and user_type required'}), 400
 
-        # Hash password
-        hashed_password = generate_password_hash(password)
+    name      = data['name']
+    email     = data['email']
+    password  = data['password']
+    user_type = data['user_type']
 
-        # Save profile image
-        image_filename = None
-        if image and image.filename != '':
-            filename = secure_filename(image.filename)
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'images', filename)
-            os.makedirs(os.path.dirname(image_path), exist_ok=True)
-            image.save(image_path)
-            image_filename = image_path
+    # Check if already exists
+    if User.query.filter_by(email=email).first():
+        return jsonify({'error': 'Email already registered'}), 409
 
-        # Check if user already exists
-        existing_user = User.query.filter_by(email=email).first()
-        if existing_user:
-            flash('Email already registered.', 'error')
-            return redirect(url_for('signup'))
+    # Hash & create
+    hashed = generate_password_hash(password)
+    new_user = User(
+        name=name,
+        email=email,
+        password=hashed,
+        user_type=user_type,
+        profile_image=None      # handle uploads separately if needed
+    )
+    db.session.add(new_user)
+    db.session.commit()
 
-        # Create user
-        new_user = User(
-            name=name,
-            email=email,
-            password=hashed_password,
-            user_type=user_type,
-            profile_image=image_filename
-        )
-        db.session.add(new_user)
-        db.session.commit()
+    # (Optional) log them in immediately
+    session.clear()
+    session['user_id']   = new_user.id
+    session['user_type'] = new_user.user_type
+    session['user_name'] = new_user.name
 
-        flash('Signup successful! You can now log in.', 'success')
-        return redirect(url_for('login'))
-
-    return render_template('signup.html')
+    return jsonify({
+        'message':   'Signup successful',
+        'user_type': new_user.user_type,
+        'user_name': new_user.name
+    }), 201
 
 #####################################################
 #  DOCTOR PROTAL
 #####################################################
 
-@app.route('/doctor', methods=['GET', 'POST'])
+@app.route('/doctor', methods=['GET'])
 def doctor_view():
-        
     if 'user_id' not in session or session.get('user_type') != 'doctor':
-        flash("Please login first", "info")
-        return redirect(url_for('login'))
+        return jsonify({"error": "Unauthorized. Please log in as a doctor."}), 401
 
-    All_appointment_data = get_all_appointments()
+    doctor_id = session['user_id']
+
+    # Filter appointments by this doctor
+    appointments = AppointmentBooking.query \
+        .filter_by(doctor_id=doctor_id) \
+        .order_by(AppointmentBooking.timestamp.asc()) \
+        .all()
+
+    all_appointments = []
+    for appt in appointments:
+        all_appointments.append({
+            'id': appt.id,
+            'timestamp': appt.timestamp,
+            'reason': appt.reason,
+            'patient_id': appt.patient.id,
+            'patient_name': appt.patient.name,
+            'email': appt.patient.email,
+            'profile_image': appt.patient.profile_image,
+        })
 
     selected_pid = request.args.get('patient_id', type=int)
 
-    selected_patient_data = []
+    selected_data = None
     if selected_pid:
-        # Find the patient in the list of upcoming appointments
-        selected_patient = next((appt for appt in All_appointment_data if appt['patient_id'] == selected_pid), None)
-
+        selected_patient = next((appt for appt in all_appointments if appt['patient_id'] == selected_pid), None)
         if selected_patient:
-            selected_patient_data.append({
+            selected_data = {
                 'patient': selected_patient,
                 'past_visits': get_all_past_visits(selected_pid)
-            })
-    elif All_appointment_data:
-        # fallback to first patient
-        fallback = All_appointment_data[0]
-        selected_patient_data.append({
+            }
+    elif all_appointments:
+        fallback = all_appointments[0]
+        selected_data = {
             'patient': fallback,
             'past_visits': get_all_past_visits(fallback['patient_id'])
-        })
-            
-    return render_template(
-    'doctor_view.html',
-    upcoming_appointments=All_appointment_data,
-    selected_patient_data= selected_patient_data
-    )
+        }
+
+    return jsonify({
+        'upcoming_appointments': all_appointments,
+        'selected_patient_data': selected_data
+    }), 200
+
+
 
 #####################################################
 #  Recording/Transcript
@@ -297,101 +330,155 @@ def save_recording():
 #####################################################
 
 @app.route('/patient', methods=['GET', 'POST'])
-def patient_dashboard():
+def patient_api():
+    # authentication & role check
     if 'user_id' not in session or session.get('user_type') != 'patient':
-        flash("Please login first", "info")
-        return redirect(url_for('login'))
+        return jsonify({'error': 'Unauthorized'}), 401
 
     patient_id = session['user_id']
-    #print(patient_id)
-    patient = User.query.get(patient_id)
 
-    # Handle booking appointment
+    # POST → book new appointment
     if request.method == 'POST':
-        doctor_id = request.form['doctor_id']
-        reason = request.form['reason']
-        timestamp_str = request.form['timestamp']
-        timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %I:%M %p")
+        data = request.get_json() or {}
+        # validate
+        if not all(k in data for k in ('doctor_id', 'reason', 'timestamp')):
+            return jsonify({'error': 'doctor_id, reason and timestamp are required'}), 400
+
+        try:
+            # expect ISO-formatted string e.g. "2025-05-27T14:30:00"
+            ts = datetime.fromisoformat(data['timestamp'])
+        except ValueError:
+            return jsonify({'error': 'Invalid timestamp format'}), 400
 
         new_appt = AppointmentBooking(
             patient_id=patient_id,
-            reason=reason,
-            timestamp=timestamp
+            doctor_id=data['doctor_id'],
+            reason=data['reason'],
+            timestamp=ts
         )
         db.session.add(new_appt)
         db.session.commit()
-        flash('Appointment booked successfully!', 'success')
-        return redirect(url_for('patient_dashboard'))
 
-    # Upcoming appointments
-    upcoming_appointments = AppointmentBooking.query.filter_by(patient_id=patient_id)\
-        .filter(AppointmentBooking.timestamp >= datetime.utcnow())\
-        .order_by(AppointmentBooking.timestamp.asc())\
+        return jsonify({'message': 'Appointment booked successfully'}), 201
+
+    # GET → fetch dashboard data
+    # patient details
+    patient = User.query.get(patient_id)
+    patient_info = {
+        'id': patient.id,
+        'name': patient.name,
+        'email': patient.email,
+        'profile_image': patient.profile_image
+    }
+
+    # available doctors for dropdown
+    doctors = [
+        {'id': d.id, 'name': d.name}
+        for d in User.query.filter_by(user_type='doctor')
+    ]
+
+    # upcoming appointments
+    upcoming = AppointmentBooking.query \
+        .filter_by(patient_id=patient_id) \
+        .filter(AppointmentBooking.timestamp >= datetime.utcnow()) \
+        .order_by(AppointmentBooking.timestamp.asc()) \
         .all()
 
-    appt_data = []
-    for appt in upcoming_appointments:
-        doctor = User.query.get(appt.patient_id)
-        appt_data.append({
-            'doctor_name': doctor.name if doctor else "Doctor",
-            'timestamp': appt.timestamp,
-            'reason': appt.reason
-        })
+    upcoming_appointments = [
+        {
+            'id': appt.id,
+            'doctor_id': appt.doctor_id,
+            'doctor_name': User.query.get(appt.doctor_id).name,
+            'reason': appt.reason,
+            'timestamp': appt.timestamp.isoformat()
+        }
+        for appt in upcoming
+    ]
 
-    # Fetch available doctors
-    doctors = User.query.filter_by(user_type='doctor').all()
+    # past visits
+    visits = Visit.query.filter_by(patient_id=patient_id) \
+        .order_by(Visit.timestamp.desc()) \
+        .all()
+    past_visits = [
+        {
+            'id': v.id,
+            'timestamp': v.timestamp.isoformat(),
+            'reason': v.reason,
+            'transcript': v.transcript
+        }
+        for v in visits
+    ]
 
-    # Past visits
-    past_visits = Visit.query.filter_by(patient_id=patient_id).order_by(Visit.timestamp.desc()).all()
-    print(past_visits)
-    return render_template(
-        'patient_dashboard.html',
-        patient=patient,
-        doctors=doctors,
-        upcoming_appointments=appt_data,
-        past_visits=past_visits
-    )
+    return jsonify({
+        'patient': patient_info,
+        'doctors': doctors,
+        'upcoming_appointments': upcoming_appointments,
+        'past_visits': past_visits
+    }), 200
 
 #####################################################
 #  List of Patients PAGE
 #####################################################
-@app.route('/patients')
-def patients_page():
+
+@app.route('/patients', methods=['GET'])
+def get_patients():
     if 'user_id' not in session or session.get('user_type') != 'doctor':
-        flash("Access denied. Please log in.", "danger")
-        return redirect(url_for('login'))
+        return jsonify({"error": "Access denied. Please log in as a doctor."}), 401
 
     patients = User.query.filter_by(user_type='patient').all()
-    
-    if not patients:
-        flash("No patients found.", "info")
 
-    return render_template("patients.html", patients=patients)
+    if not patients:
+        return jsonify({"message": "No patients found.", "patients": []}), 200
+
+    patient_list = [
+        {
+            "id": patient.id,
+            "name": patient.name,
+            "email": patient.email,
+            "profile_image": patient.profile_image,  # optional
+        }
+        for patient in patients
+    ]
+
+    return jsonify({"patients": patient_list}), 200
+
 
 #####################################################
 #  List of DOCTORs PAGE
 #####################################################
-@app.route('/doctors')
-def doctors_page():
+
+@app.route('/doctors', methods=['GET'])
+def get_doctors():
     if 'user_id' not in session or session.get('user_type') != 'patient':
-        flash("Please login first", "info")
-        return redirect(url_for('login'))
+        return jsonify({"error": "Unauthorized access. Please login as a patient."}), 401
 
     doctors = User.query.filter_by(user_type='doctor').all()
-    if not doctors:
-        flash("No doctors found.", "info")
 
-    return render_template("doctors.html", doctors=doctors)
+    if not doctors:
+        return jsonify({"message": "No doctors found.", "doctors": []}), 200
+
+    doctor_list = [
+        {
+            "id": doctor.id,
+            "name": doctor.name,
+            "email": doctor.email,
+            # "specialty": doctor.specialty,  # if such a field exists
+            "profile_image": doctor.profile_image,  # optional
+        }
+        for doctor in doctors
+    ]
+
+    return jsonify({"doctors": doctor_list}), 200
+
 
 #####################################################
 #  Logout feature implementation
 #####################################################
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.clear()
-    flash("You have been logged out.", "info")
-    return redirect(url_for('login'))  # redirect to your login page
+    return jsonify({"message": "Logged out successfully."}), 200
 
 #####################################################
 #  To avoid logging in by pressing back in browser.
@@ -419,16 +506,16 @@ def about_page():
 #####################################################
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
-
-        db.session.add_all(users)
-        db.session.commit()
-
-        db.session.add_all(appointments)
-        db.session.add_all(visits)
-        db.session.commit()
+    # with app.app_context():
+        # db.drop_all()
+        # db.create_all()
+        #
+        # db.session.add_all(users)
+        # db.session.commit()
+        #
+        # db.session.add_all(appointments)
+        # db.session.add_all(visits)
+        # db.session.commit()
 
     app.run(host='0.0.0.0',port=80,debug=True)
 

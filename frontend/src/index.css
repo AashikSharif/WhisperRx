@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Base button */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  border: none;
+  background: none;
+}
+
+/* Variants */
+.btn--primary {
+  background-color: #f6e58d;
+  color: #000;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px #f9ca24;
+}
+
+/* Size modifiers (optional) */
+.btn--wide {
+  width: 30%;
+}
+.btn--narrow {
+  width: 15%;
+}
+
+/* Icon “fly‐in” */
+.btn__label {
+  position: relative;
+  display: inline-block;
+  transition: all 0.5s ease;
+}
+
+/*.btn__label::before {*/
+/*  content: "\f04c";         !* FontAwesome “play” *!*/
+/*  !*font-family: "FontAwesome";*!*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  left: 1.5rem;*/
+/*  opacity: 0;*/
+/*  transition: all 0.3s ease 0.3s;*/
+/*}*/
+
+/* Hover state — slide text over & reveal icon */
+/*.btn--primary:hover .btn__label {*/
+/*  padding-left: 1.5rem;*/
+/*}*/
+/*.btn--primary:hover .btn__label::before {*/
+/*  left: 0;*/
+/*  opacity: 1;*/
+/*}*/
+
+/* Active/pressed state */
+.btn--primary:active {
+  transform: translateY(5px);
+  box-shadow: 0 5px #f0932b;
+}
+
+.hide-scrollbar {
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.custom-shadow {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+}
+
+.scroll {
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+}
+
+.markdown-box {
+  text-align: left;
+  /*max-height: 500px;*/
+  overflow-y: auto;
+  line-height: 1.6;
+  hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: #ededed;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  li {
+    font-family: monospace;
+    font-size: 1rem;
+  }
+
+}
+

@@ -14,13 +14,15 @@ class User(db.Model):
     
 
 class AppointmentBooking(db.Model):
-    id = db.Column(db.Integer, primary_key=True)  # Fixed typo here
-    patient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Added index for performance
-    reason = db.Column(db.String(200), nullable=False)  # Changed 'Reason' to lowercase and made it required
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Default timestamp and index
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # ✅ ADD THIS
+    reason = db.Column(db.String(200), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-#     # Define relationship to the User model
-    patient = db.relationship('User', backref=db.backref('appointments', lazy=True))
+    patient = db.relationship('User', foreign_keys=[patient_id])
+    doctor = db.relationship('User', foreign_keys=[doctor_id])
+
 
 class Visit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,13 +52,13 @@ users = [
     User(name='Dr. Jackson', email='jack@whisperrx.com', password=generate_password_hash('test'), user_type='doctor',profile_image='/static/jack.jpg'),
 ]
 appointments = [
-    AppointmentBooking(patient_id=2, reason='Flu + Cold', timestamp=datetime(2025, 4, 7, 10, 41)),
-    AppointmentBooking(patient_id=3, reason='Broken Leg', timestamp=datetime(2025, 4, 7, 11, 15)),
-    AppointmentBooking(patient_id=4, reason='STI', timestamp=datetime(2025, 4, 7, 12, 00)),
-    AppointmentBooking(patient_id=5, reason='Nausea, sick', timestamp=datetime(2025, 4, 8 , 10, 00)),
-    AppointmentBooking(patient_id=8, reason='diarhea', timestamp=datetime(2025, 4, 8, 10, 35)),
-    AppointmentBooking(patient_id=9, reason='flu', timestamp=datetime(2025, 4, 8, 4, 35)),
-    AppointmentBooking(patient_id=11, reason='blisters', timestamp=datetime(2025, 4, 8, 12, 35)),
+    AppointmentBooking(patient_id=2, reason='Flu + Cold', timestamp=datetime(2025, 4, 7, 10, 41), doctor_id=1),
+    AppointmentBooking(patient_id=3, reason='Broken Leg', timestamp=datetime(2025, 4, 7, 11, 15), doctor_id=1),
+    AppointmentBooking(patient_id=4, reason='STI', timestamp=datetime(2025, 4, 7, 12, 00), doctor_id=1),
+    AppointmentBooking(patient_id=5, reason='Nausea, sick', timestamp=datetime(2025, 4, 8 , 10, 00), doctor_id=1),
+    AppointmentBooking(patient_id=8, reason='diarhea', timestamp=datetime(2025, 4, 8, 10, 35), doctor_id=1),
+    AppointmentBooking(patient_id=9, reason='flu', timestamp=datetime(2025, 4, 8, 4, 35), doctor_id=1),
+    AppointmentBooking(patient_id=11, reason='blisters', timestamp=datetime(2025, 4, 8, 12, 35), doctor_id=1),
 ]
 visits = [
     Visit(
